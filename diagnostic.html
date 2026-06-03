@@ -1,129 +1,107 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تحديد المستوى — English GO</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --yellow: #FFD700;
-    --yellow-dark: #E6C200;
-    --black: #0A0A0A;
-    --white: #FFFFFF;
-    --gray: #F5F5F0;
-    --gray-mid: #E8E8E0;
-    --nav-h: 70px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Cairo', sans-serif; background: var(--gray); color: var(--black); padding-top: calc(var(--nav-h) + 2rem); }
-  
-  /* القائمة العلوية للتوافق مع الموقع */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    height: var(--nav-h); background: var(--black);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; border-bottom: 3px solid var(--yellow);
-  }
-  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); letter-spacing: 3px; text-decoration: none; }
-  .logo span { color: var(--white); }
-  .nav-links { display: flex; gap: 0.5rem; list-style: none; }
-  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 8px 14px; border-radius: 6px; }
-  .nav-links a.active { background: var(--yellow); color: var(--black); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحديد المستوى — English GO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --yellow: #FFD700; --black: #0A0A0A; --white: #FFFFFF; --gray: #F5F5F0; --nav-h: 70px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: var(--gray); padding-top: calc(var(--nav-h) + 2rem); }
+        
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: var(--nav-h); background: var(--black); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; border-bottom: 3px solid var(--yellow); }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); text-decoration: none; }
+        .logo span { color: var(--white); }
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 8px 14px; border-radius: 6px; }
+        .nav-links a.active { background: var(--yellow); color: var(--black); }
 
-  main { max-width: 700px; margin: 0 auto; padding: 1rem; }
-  .quiz-card { background: var(--white); padding: 2rem; border-radius: 16px; border: 1px solid var(--gray-mid); border-top: 5px solid var(--black); }
-  h2 { margin-bottom: 1.5rem; font-size: 1.2rem; }
-  
-  .option-btn {
-    display: block; width: 100%; padding: 1rem; margin-bottom: 0.75rem;
-    text-align: right; background: var(--gray); border: 1px solid var(--gray-mid);
-    border-radius: 8px; cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 0.95rem;
-    transition: all 0.2s;
-  }
-  .option-btn:hover { background: var(--yellow); border-color: var(--yellow-dark); }
-</style>
+        .quiz-container { max-width: 700px; margin: 2rem auto; background: var(--white); padding: 2.5rem; border-radius: 12px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .progress { font-weight: bold; color: #666; margin-bottom: 1rem; display: block; }
+        .question { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--black); }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { background: var(--gray); border: 1px solid #e0e0e0; padding: 1rem; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .option:hover { background: var(--yellow); border-color: var(--yellow); }
+    </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">English <span>GO</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">الرئيسية</a></li>
-    <li><a href="diagnostic.html" class="active">تحديد المستوى</a></li>
-    <li><a href="profile.html">تقدمي</a></li>
-  </ul>
-</nav>
+<header>
+    <a href="index.html" class="logo">English <span>GO</span></a>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="lessons.html">الدروس</a></li>
+            <li><a href="diagnostic.html" class="active">تحديد المستوى</a></li>
+            <li><a href="profile.html">ملفي الشخصي</a></li>
+        </ul>
+    </nav>
+</header>
 
-<main>
-  <div class="quiz-card" id="quizCard">
-    <h2 id="questionText">جاري تحميل السؤال الأول...</h2>
-    <div id="optionsContainer"></div>
-  </div>
+<main class="quiz-container">
+    <span class="progress" id="progressText">السؤال 1 من 3</span>
+    <div class="question" id="questionText">جاري تحميل السؤال الأول...</div>
+    <div class="options" id="optionsContainer"></div>
 </main>
 
 <script>
-// أسئلة الاختبار التشخيصي
-const questions = [
-  { type: 'grammar', q: 'السؤال 1 (قواعد): She ________ to school every day.', options: ['go', 'goes', 'going', 'gone'], answer: 'goes' },
-  { type: 'vocab', q: 'السؤال 2 (مفردات): What is the opposite of "Huge"?', options: ['Big', 'Large', 'Tiny', 'Heavy'], answer: 'Tiny' },
-  { type: 'reading', q: 'السؤال 3 (قراءة): "Sam loves apples. He buys them from the market." Where does Sam get apples?', options: ['From school', 'From the market', 'From his friend', 'From the garden'], answer: 'From the market' }
-];
+    const questions = [
+        { q: "She _______ to school every day.", src: ["go", "goes", "going", "went"], a: "goes", cat: "grammar" },
+        { q: "Which word means 'very big'?", src: ["Tiny", "Huge", "Small", "Weak"], a: "Huge", cat: "vocab" },
+        { q: "I haven't seen him _______ 2020.", src: ["for", "since", "from", "in"], a: "since", cat: "grammar" }
+    ];
 
-let currentIdx = 0;
-let results = { grammar: 0, vocab: 0, reading: 0 };
+    let currentIdx = 0;
+    let score = 0;
+    let breakdown = { grammar: 0, vocab: 0, reading: 100 };
 
-function showQuestion() {
-  if (currentIdx >= questions.length) {
-    finishQuiz();
-    return;
-  }
-  
-  const qObj = questions[currentIdx];
-  document.getElementById('questionText').textContent = qObj.q;
-  
-  const container = document.getElementById('optionsContainer');
-  container.innerHTML = '';
-  
-  qObj.options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(opt);
-    container.appendChild(btn);
-  });
-}
+    function loadQuestion() {
+        if (currentIdx >= questions.length) {
+            finishQuiz();
+            return;
+        }
+        const q = questions[currentIdx];
+        document.getElementById('progressText').textContent = `السؤال ${currentIdx + 1} من ${questions.length}`;
+        document.getElementById('questionText').textContent = q.q;
+        
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        
+        q.src.forEach(opt => {
+            const btn = document.createElement('div');
+            btn.className = 'option';
+            btn.textContent = opt;
+            btn.onclick = () => handleAnswer(opt, q.a, q.cat);
+            container.appendChild(btn);
+        });
+    }
 
-function checkAnswer(selected) {
-  const qObj = questions[currentIdx];
-  if (selected === qObj.answer) {
-    results[qObj.type] = 100; // الإجابة صحيحة للمهارة المعنية
-  }
-  currentIdx++;
-  showQuestion();
-}
+    function handleAnswer(selected, correct, category) {
+        if (selected === correct) {
+            score++;
+            breakdown[category] = (breakdown[category] || 0) + 50; 
+        }
+        currentIdx++;
+        loadQuestion();
+    }
 
-function finishQuiz() {
-  // حساب النتيجة الإجمالية
-  const totalScore = Math.round((results.grammar + results.vocab + results.reading) / 3);
-  
-  // تحديد اسم المستوى بناءً على النتيجة
-  let level = 'BEGINNER';
-  if (totalScore === 66) level = 'BEGINNER+';
-  if (totalScore === 100) level = 'INTERMEDIATE';
-  
-  // حفظ البيانات لتتوافق تماماً مع كود صفحة "تقدمي"
-  localStorage.setItem('eg_diagnostic_done', 'true');
-  localStorage.setItem('eg_level', level);
-  localStorage.setItem('eg_score', totalScore);
-  localStorage.setItem('eg_scores', JSON.stringify(results));
-  
-  // توجيه الطالب تلقائياً لصفحة تقدمي لمشاهدة النتيجة والخطة المخصصة له
-  alert('أحسنت! تم حفظ نتيجتك، سيتم توجيهك الآن لملفك الشخصي.');
-  window.location.href = 'profile.html';
-}
+    function finishQuiz() {
+        const finalScore = Math.round((score / questions.length) * 100);
+        let level = "BEGINNER";
+        if (finalScore > 40) level = "BEGINNER+";
+        if (finalScore > 75) level = "INTERMEDIATE";
 
-showQuestion();
+        localStorage.setItem('eg_diagnostic_done', 'true');
+        localStorage.setItem('eg_score', finalScore);
+        localStorage.setItem('eg_level', level);
+        localStorage.setItem('eg_scores', JSON.stringify({ grammar: Math.min(breakdown.grammar, 100), vocab: Math.min(breakdown.vocab, 100), reading: 100 }));
+
+        alert(`اكتمل الاختبار! نتيجتك هي ${finalScore}% ومستواك هو ${level}`);
+        window.location.href = "profile.html";
+    }
+
+    window.onload = loadQuestion;
 </script>
 </body>
 </html>

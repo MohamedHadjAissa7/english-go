@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English GO — الدروس</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --yellow: #FFD700;
+            --black: #0A0A0A;
+            --white: #FFFFFF;
+            --gray: #F5F5F0;
+            --nav-h: 70px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: var(--gray); color: var(--black); padding-top: calc(var(--nav-h) + 1.5rem); overflow-x: hidden; }
+
+        /* شريط التنقل العلوي مع أنيميشن الدخول */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            height: var(--nav-h); background: var(--black);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; border-bottom: 3px solid var(--yellow);
+            animation: fadeInDown 0.5s ease;
+        }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); text-decoration: none; letter-spacing: 2px; }
+        .logo span { color: var(--white); }
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { background: var(--yellow); color: var(--black); }
+
+        .main-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 2rem; padding: 1rem; align-items: flex-start; }
+
+        /* القائمة الجانبية */
+        .sidebar { 
+            width: 280px; background: var(--white); padding: 1.5rem; border-radius: 16px; 
+            border: 1px solid #e0e0e0; height: fit-content; 
+            animation: fadeInRight 0.6s ease;
+        }
+        .sidebar h2 { font-size: 1.1rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--yellow); display: flex; align-items: center; gap: 8px; }
+        .sidebar ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .sidebar a { text-decoration: none; color: var(--black); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; transition: 0.3s; }
+        .sidebar a:hover, .sidebar a.active { background: var(--gray); padding-right: 20px; color: var(--black); }
+
+        /* منطقة محتوى الدروس */
+        .content { flex: 1; display: flex; flex-direction: column; gap: 2rem; animation: fadeInLeft 0.6s ease; }
+        .section-box { background: var(--white); padding: 2rem; border-radius: 16px; border: 1px solid #e0e0e0; }
+        
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; color: var(--black); }
+        .section-title i { color: var(--yellow); background: var(--black); padding: 8px; border-radius: 8px; font-size: 1rem; }
+
+        /* شبكة كروت الدروس */
+        .lessons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        
+        .lesson-card { 
+            background: var(--white); border-radius: 14px; border: 1px solid #e0e0e0; 
+            padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;
+            transition: 0.3s; position: relative; overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .lesson-card:hover { transform: translateY(-5px); border-color: var(--black); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        
+        .lesson-badge { background: var(--black); color: var(--yellow); font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 4px; position: absolute; top: 15px; left: 15px; }
+        .lesson-info h3 { font-size: 1.15rem; margin-bottom: 0.5rem; margin-top: 1rem; font-weight: 700; }
+        .lesson-info p { color: #666; font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.5rem; }
+        
+        .btn-read { 
+            background: var(--black); color: var(--yellow); border: none; width: 100%; padding: 10px; 
+            font-family: 'Cairo', sans-serif; font-weight: bold; font-size: 0.9rem; border-radius: 6px; 
+            cursor: pointer; transition: 0.3s; text-align: center;
+        }
+        .btn-read:hover { background: var(--yellow); color: var(--black); }
+
+        /* النافذة المنبثقة لعرض الشرح (Modal) */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+        .modal-box { background: var(--white); width: 100%; max-width: 600px; border-radius: 16px; overflow: hidden; border-top: 5px solid var(--yellow); animation: zoomIn 0.3s ease; }
+        .modal-header { background: var(--black); color: var(--white); padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { background: transparent; border: none; color: var(--white); font-size: 1.8rem; cursor: pointer; }
+        .close-btn:hover { color: var(--yellow); }
+        .modal-body { padding: 2rem; max-height: 65vh; overflow-y: auto; line-height: 1.8; direction: ltr; text-align: left; }
+        .modal-body h4 { margin-top: 1.2rem; margin-bottom: 0.4rem; color: #000; border-left: 3px solid var(--yellow); padding-left: 8px; font-size: 1.1rem; }
+
+        /* الحركات النسيجية بالـ CSS */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">English <span>GO</span></a>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="lessons.html" class="active">الدروس</a></li>
+            <li><a href="diagnostic.html">تحديد المستوى</a></li>
+            <li><a href="profile.html">ملفي الشخصي</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main-container">
+    <aside class="sidebar">
+        <h2><i class="fa-solid fa-bars"></i> أقسام الدروس</h2>
+        <ul>
+            <li><a href="#" class="active"><i class="fa-solid fa-book"></i> جميع الدروس المتاحة</a></li>
+            <li><a href="#"><i class="fa-solid fa-graduation-cap"></i> قواعد المستوى A1</a></li>
+            <li><a href="#"><i class="fa-solid fa-lightbulb"></i> مفردات المستوى B1</a></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+        <section class="section-box">
+            <h2 class="section-title"><i class="fa-solid fa-book-open"></i> مكتبة الدروس الذكية</h2>
+            
+            <div class="lessons-grid">
+                <div class="lesson-card">
+                    <span class="lesson-badge">A1 — مبتدئ</span>
+                    <div class="lesson-info">
+                        <h3>1. المضارع البسيط (Present Simple)</h3>
+                        <p>تعلم كيف تعبر عن عاداتك اليومية والحقائق الثابتة في الحياة باستخدام تركيب برمي مبسط.</p>
+                    </div>
+                    <button class="btn-read" onclick="showLesson('المضارع البسيط', '<h4>Form:</h4><p>Subject (I, You, We, They) + Verb 1<br>Subject (He, She, It) + Verb + s/es</p><h4>Examples:</h4><ul><li>I speak English every day.</li><li>He lives in Algiers.</li></ul>')">اقرأ الدرس الآن</button>
+                </div>
+
+                <div class="lesson-card">
+                    <span class="lesson-badge">A1 — مبتدئ</span>
+                    <div class="lesson-info">
+                        <h3>2. الضمائر الأساسية (Pronouns)</h3>
+                        <p>الشرح الكامل لضمائر الفاعل والمفعول به وكيفية استخدامها لبناء جملة إنجليزية سليمة.</p>
+                    </div>
+                    <button class="btn-read" onclick="showLesson('الضمائر الأساسية', '<h4>Subject Pronouns:</h4><p>I, You, He, She, It, We, They</p><h4>Object Pronouns:</h4><p>Me, You, Him, Her, It, Us, Them</p><h4>Examples:</h4><ul><li><strong>She</strong> called <strong>me</strong> yesterday.</li><li>Ahmed loves <strong>them</strong>.</li></ul>')">اقرأ الدرس الآن</button>
+                </div>
+
+                <div class="lesson-card">
+                    <span class="lesson-badge">B1 — متوسط</span>
+                    <div class="lesson-info">
+                        <h3>3. المضارع التام (Present Perfect)</h3>
+                        <p>اربط بين الماضي والحاضر بسهولة وتعرف على الكلمات الدلالية المستعملة في هذا الزمن.</p>
+                    </div>
+                    <button class="btn-read" onclick="showLesson('المضارع التام', '<h4>Form:</h4><p>Subject + have / has + Past Participle (V3)</p><h4>Examples:</h4><ul><li>I <strong>have visited</strong> London twice.</li><li>She <strong>has already finished</strong> her homework.</li></ul>')">اقرأ الدرس الآن</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div class="modal-overlay" id="lessonModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalTitle">عنوان الدرس</h3>
+            <button class="close-btn" onclick="hideLesson()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            </div>
+    </div>
+</div>
+
+<script>
+    function showLesson(title, content) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalBody').innerHTML = content;
+        document.getElementById('lessonModal').style.display = 'flex';
+    }
+
+    function hideLesson() {
+        document.getElementById('lessonModal').style.display = 'none';
+    }
+
+    // إغلاق النافذة عند الضغط خارج الصندوق الأسود
+    window.onclick = function(event) {
+        const modal = document.getElementById('lessonModal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
