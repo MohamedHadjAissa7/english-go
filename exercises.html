@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التمارين — English GO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD700;
+    --yellow-dark: #E6C200;
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --gray: #F5F5F0;
+    --gray-mid: #E8E8E0;
+    --text-muted: #6B6B60;
+    --nav-h: 70px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Cairo', sans-serif; background: var(--gray); color: var(--black); padding-top: calc(var(--nav-h) + 2rem); }
+  
+  /* شريط التنقل */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h); background: var(--black);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; border-bottom: 3px solid var(--yellow);
+  }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--yellow); letter-spacing: 3px; text-decoration: none; }
+  .logo span { color: var(--white); }
+  .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 8px 14px; border-radius: 6px; transition: 0.2s;}
+  .nav-links a:hover, .nav-links a.active { background: var(--yellow); color: var(--black); }
+
+  /* تصميم الحاوية الرئيسية */
+  main { max-width: 800px; margin: 0 auto; padding: 1rem; }
+  .header-title { text-align: center; margin-bottom: 2rem; }
+  .header-title h1 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 2px; }
+  .header-title p { color: var(--text-muted); font-weight: 600; }
+
+  /* بطاقة التمرين */
+  .exercise-card {
+    background: var(--white); border-radius: 20px; padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 5px solid var(--yellow);
+  }
+  
+  .instruction { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .translation { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+  /* منطقة بناء الجملة (من اليسار لليمين لأنها لغة إنجليزية) */
+  .sentence-area {
+    min-height: 70px; background: var(--gray); border: 2px dashed var(--gray-mid);
+    border-radius: 12px; padding: 1rem; margin-bottom: 2rem;
+    display: flex; flex-wrap: wrap; gap: 10px; dir: ltr; /* اتجاه إنجليزي */
+    align-items: center; justify-content: flex-start;
+  }
+
+  /* الكلمات المتاحة للاختيار */
+  .words-bank {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2rem; dir: ltr;
+  }
+
+  /* تصميم الكلمات (الأزرار) */
+  .word-btn {
+    background: var(--white); border: 2px solid var(--gray-mid); border-bottom-width: 4px;
+    padding: 10px 20px; border-radius: 10px; font-family: 'Segoe UI', sans-serif; font-weight: bold;
+    font-size: 1.1rem; cursor: pointer; transition: all 0.1s; color: var(--black);
+  }
+  .word-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+  .word-btn:hover { border-color: var(--yellow); }
+  
+  /* حالة الكلمة عندما يتم اختيارها وتبقى في البنك */
+  .word-btn.empty { background: var(--gray); color: transparent; border-color: transparent; pointer-events: none; }
+
+  /* أزرار التحكم */
+  .actions { display: flex; gap: 1rem; justify-content: center; }
+  .btn {
+    padding: 12px 30px; border: none; border-radius: 10px; font-family: 'Cairo', sans-serif;
+    font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s;
+  }
+  .btn-check { background: var(--yellow); color: var(--black); flex-grow: 1; }
+  .btn-check:hover { background: var(--yellow-dark); }
+  .btn-clear { background: #ff4757; color: white; }
+  .btn-clear:hover { background: #ff6b81; }
+
+  /* رسالة النتيجة */
+  #feedback {
+    margin-top: 1.5rem; text-align: center; font-weight: bold; font-size: 1.2rem; display: none; padding: 10px; border-radius: 8px;
+  }
+  .correct { background: #2ed573; color: white; }
+  .wrong { background: #ff4757; color: white; }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">English <span>GO</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">الرئيسية</a></li>
+    <li><a href="diagnostic.html">تحديد المستوى</a></li>
+    <li><a href="lessons.html">الدروس</a></li>
+    <li><a href="exercises.html" class="active">التمارين</a></li>
+    <li><a href="profile.html">تقدمي</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="header-title">
+    <h1>PRACTICE MAKES PERFECT</h1>
+    <p>رتب الكلمات لبناء جمل إنجليزية صحيحة</p>
+  </div>
+
+  <div class="exercise-card">
+    <div class="instruction" id="instruction">رتب الكلمات لتكوين هذه الجملة:</div>
+    <div class="translation" id="translation">"أنا أتعلم الإنجليزية كل يوم"</div>
+
+    <div class="sentence-area" id="sentenceArea" dir="ltr"></div>
+
+    <div class="words-bank" id="wordsBank" dir="ltr"></div>
+
+    <div class="actions">
+      <button class="btn btn-clear" onclick="clearSentence()">إعادة ضبط</button>
+      <button class="btn btn-check" onclick="checkAnswer()">تحقق من الإجابة</button>
+    </div>
+
+    <div id="feedback"></div>
+  </div>
+</main>
+
+<script>
+// قاعدة بيانات التمارين
+const exercises = [
+  { translation: "أنا أتعلم الإنجليزية كل يوم", words: ["every", "I", "day", "English", "learn"], correct: "I learn English every day" },
+  { translation: "من أين أنت؟", words: ["from", "Where", "you", "are", "?"], correct: "Where are you from ?" },
+  { translation: "هي لا تحب التفاح", words: ["like", "apples", "She", "not", "does"], correct: "She does not like apples" }
+];
+
+let currentExIndex = 0;
+let selectedWords = []; // الكلمات التي اختارها المستخدم
+
+function loadExercise() {
+  const ex = exercises[currentExIndex];
+  document.getElementById('translation').textContent = `"${ex.translation}"`;
+  document.getElementById('feedback').style.display = 'none';
+  selectedWords = [];
+  
+  renderSentenceArea();
+  renderWordsBank(ex.words);
+}
+
+function renderWordsBank(words) {
+  const bank = document.getElementById('wordsBank');
+  bank.innerHTML = '';
+  words.forEach((word, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = word;
+    // إذا كانت الكلمة مختارة سابقاً، اجعل مكانها فارغاً
+    if(selectedWords.includes(index)) {
+      btn.className = 'word-btn empty';
+    } else {
+      btn.className = 'word-btn';
+      btn.onclick = () => selectWord(index);
+    }
+    bank.appendChild(btn);
+  });
+}
+
+function renderSentenceArea() {
+  const area = document.getElementById('sentenceArea');
+  area.innerHTML = '';
+  const exWords = exercises[currentExIndex].words;
+  
+  selectedWords.forEach((wordIndex, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = exWords[wordIndex];
+    btn.className = 'word-btn';
+    btn.onclick = () => removeWord(i); // إزالة الكلمة عند الضغط عليها في الجملة
+    area.appendChild(btn);
+  });
+}
+
+function selectWord(index) {
+  selectedWords.push(index);
+  renderSentenceArea();
+  renderWordsBank(exercises[currentExIndex].words);
+}
+
+function removeWord(selectedIndex) {
+  selectedWords.splice(selectedIndex, 1);
+  renderSentenceArea();
+  renderWordsBank(exercises[currentExIndex].words);
+}
+
+function clearSentence() {
+  selectedWords = [];
+  renderSentenceArea();
+  renderWordsBank(exercises[currentExIndex].words);
+  document.getElementById('feedback').style.display = 'none';
+}
+
+function checkAnswer() {
+  const ex = exercises[currentExIndex];
+  // تكوين الجملة النصية من الكلمات المختارة
+  const userSentence = selectedWords.map(index => ex.words[index]).join(" ");
+  const feedback = document.getElementById('feedback');
+  feedback.style.display = 'block';
+
+  if (userSentence === ex.correct) {
+    feedback.textContent = "إجابة صحيحة! ممتاز 🌟";
+    feedback.className = "correct";
+    
+    // الانتقال للسؤال التالي بعد ثانية ونصف
+    setTimeout(() => {
+      currentExIndex++;
+      if (currentExIndex < exercises.length) {
+        loadExercise();
+      } else {
+        alert("أكملت جميع التمارين بنجاح! سيتم توجيهك لصفحة تقدمي.");
+        window.location.href = "profile.html";
+      }
+    }, 1500);
+
+  } else {
+    feedback.textContent = "إجابة خاطئة، حاول ترتيبها من جديد ❌";
+    feedback.className = "wrong";
+    setTimeout(() => { feedback.style.display = 'none'; }, 2000);
+  }
+}
+
+// تشغيل التمرين الأول عند فتح الصفحة
+window.onload = loadExercise;
+</script>
+</body>
+</html>
